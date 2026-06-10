@@ -248,6 +248,7 @@ export function DashboardTab({
               </div>
             </div>
             <button 
+              id="dashboard-audit-habits-button"
               onClick={() => onTabChange('tracker')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 hover:scale-102 flex items-center gap-1.5 cursor-pointer ${
                 isDarkMode 
@@ -450,14 +451,19 @@ export function DashboardTab({
             </p>
           </div>
 
-          <div className="mt-6">
-            <p className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider mb-3">
+          <div className="mt-6 space-y-4">
+            <p className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">
               Ready to reduce emissions?
             </p>
-            <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-xs text-emerald-200 flex items-center justify-between mb-4">
-              <span>Try prompt: "Minimize Car commute CO2"</span>
-              <Bot size={14} className="opacity-70" />
-            </div>
+            <button
+              id="dashboard-explore-playbooks-button"
+              onClick={() => onTabChange('actions')}
+              className="w-full bg-white text-[#1F7A4C] hover:bg-emerald-50 py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all text-xs cursor-pointer shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Navigate to Climate Coach Playbooks tab"
+            >
+              <span>Consult Climate Coach Playbooks & Actions</span>
+              <ArrowRight size={14} className="shrink-0" />
+            </button>
           </div>
         </div>
 

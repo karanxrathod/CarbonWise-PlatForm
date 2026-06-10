@@ -277,7 +277,7 @@ export function Onboarding({ onComplete, isDarkMode, t }: OnboardingProps) {
             {/* 1. NAME ENTER */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="block text-xs font-bold uppercase tracking-widest text-[#6C7A73]">
+                <label htmlFor="onboardingNameInput" className="block text-xs font-bold uppercase tracking-widest text-[#6C7A73]">
                   1. What should we call you?
                 </label>
                 <span className="text-[10px] text-[#6C7A73] font-mono">Max 25 chars</span>
@@ -287,12 +287,15 @@ export function Onboarding({ onComplete, isDarkMode, t }: OnboardingProps) {
                   <User size={16} />
                 </div>
                 <input
+                  id="onboardingNameInput"
                   type="text"
                   maxLength={25}
                   placeholder="Enter your name or callsign..."
                   value={name}
                   onChange={(e) => {
-                    setName(e.target.value);
+                    // Security Sanitizer: strip raw HTML tags or script syntax characters
+                    const sanitized = e.target.value.replace(/[<>'"/\\`&;=]/g, '');
+                    setName(sanitized);
                     setError('');
                   }}
                   className={`w-full pl-11 pr-4 py-3.5 rounded-xl border focus:outline-none focus:ring-2 transition-all font-semibold ${
@@ -361,7 +364,7 @@ export function Onboarding({ onComplete, isDarkMode, t }: OnboardingProps) {
             {/* 3. SET INTENDED LIMITS */}
             <div className="space-y-4">
               <div className="flex justify-between items-end">
-                <label className="block text-xs font-bold uppercase tracking-widest text-[#6C7A73]">
+                <label htmlFor="onboardingTargetInput" className="block text-xs font-bold uppercase tracking-widest text-[#6C7A73]">
                   3. Set Monthly Emission Target
                 </label>
                 <div className="text-right">
@@ -373,6 +376,7 @@ export function Onboarding({ onComplete, isDarkMode, t }: OnboardingProps) {
               </div>
               
               <input
+                id="onboardingTargetInput"
                 type="range"
                 min="100"
                 max="1500"

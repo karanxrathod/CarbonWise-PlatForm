@@ -92,7 +92,7 @@ export function SettingsTab({
 
           {/* User Name input */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#6C7A73]">
+            <label htmlFor="profileNameInput" className="block text-xs font-bold uppercase tracking-wider text-[#6C7A73]">
               {lang === 'hi' ? '१. नाम बदलें' : '1. Profile Name'}
             </label>
             <div className="relative">
@@ -100,6 +100,7 @@ export function SettingsTab({
                 <User size={15} />
               </span>
               <input
+                id="profileNameInput"
                 type="text"
                 maxLength={20}
                 className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm font-semibold focus:outline-none transition-all ${
@@ -108,7 +109,11 @@ export function SettingsTab({
                     : 'bg-[#F2F5F3] border-[#DDE5DF] text-[#1B2B24] focus:ring-[#1F7A4C] focus:border-transparent'
                 }`}
                 value={localName}
-                onChange={(e) => setLocalName(e.target.value)}
+                onChange={(e) => {
+                  // Security Sanitizer: strip raw HTML tags or script syntax characters
+                  const sanitized = e.target.value.replace(/[<>'"/\\`&;=]/g, '');
+                  setLocalName(sanitized);
+                }}
               />
             </div>
           </div>
@@ -140,7 +145,7 @@ export function SettingsTab({
           {/* Monthly target limit */}
           <div className="space-y-3">
             <div className="flex justify-between items-end">
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#6C7A73]">
+              <label htmlFor="profileTargetInput" className="block text-xs font-bold uppercase tracking-wider text-[#6C7A73]">
                 {lang === 'hi' ? '३. मासिक CO₂ उत्सर्जन सीमा' : '3. Monthly CO₂ Emission Limit Target'}
               </label>
               <span className={`font-mono text-sm font-extrabold ${isDarkMode ? 'text-[#2EAF6C]' : 'text-[#1F7A4C]'}`}>
@@ -148,6 +153,7 @@ export function SettingsTab({
               </span>
             </div>
             <input
+              id="profileTargetInput"
               type="range"
               min="100"
               max="1500"
