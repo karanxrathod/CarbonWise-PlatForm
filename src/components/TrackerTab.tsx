@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Flame, CheckCircle, Circle, Target, Trophy, HelpCircle, Dumbbell } from 'lucide-react';
+import { getEquivalencies } from '../lib/calculations';
 
 interface TrackerTabProps {
   habitsData: Record<string, { streak: number, lastDone: string | null }>;
@@ -124,6 +125,52 @@ export function TrackerTab({ habitsData, setHabitsData, t, lang, isDarkMode }: T
           </div>
         </div>
       </div>
+
+      {/* Monthly Dynamic Impact Equivalents card */}
+      {(() => {
+        const savedKg = totalStreaks * 12; // 12kg of CO2 offset per active habit streak point
+        const equivalents = getEquivalencies(savedKg);
+        return (
+          <div className={`p-6 rounded-2xl border transition-all ${theme.card}`}>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-[#6C7A73] mb-4 flex items-center gap-2">
+              <span>Monthly Habit Impact Equivalents</span>
+              <span className="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded uppercase font-bold tracking-normal">Calculated dynamically</span>
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl border border-stone-200/45 dark:border-[#25302A] bg-stone-300/10 dark:bg-zinc-800/10 flex items-center gap-3">
+                <span className="text-3xl">🌳</span>
+                <div>
+                  <span className="block text-lg font-black font-mono text-emerald-500 dark:text-[#2EAF6C]">
+                    {equivalents.trees}
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6C7A73]">Trees Saved</span>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl border border-stone-200/45 dark:border-[#25302A] bg-stone-300/10 dark:bg-zinc-800/10 flex items-center gap-3">
+                <span className="text-3xl">🚗</span>
+                <div>
+                  <span className="block text-lg font-black font-mono text-blue-500">
+                    {equivalents.kmDriven.toLocaleString()} <span className="text-[10px] font-medium text-[#6C7A73]">km</span>
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6C7A73]">Commute Avoided</span>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl border border-stone-200/45 dark:border-[#25302A] bg-stone-300/10 dark:bg-zinc-800/10 flex items-center gap-3">
+                <span className="text-3xl">⚡</span>
+                <div>
+                  <span className="block text-lg font-black font-mono text-amber-500">
+                    {equivalents.kwhSaved.toLocaleString()} <span className="text-[10px] font-medium text-[#6C7A73]">kWh</span>
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#6C7A73]">Energy Saved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Grid checklist of active habits */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

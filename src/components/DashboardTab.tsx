@@ -31,6 +31,7 @@ interface DashboardTabProps {
   profileAvatar: string;
   profileTarget: number;
   isDarkMode: boolean;
+  onTabChange: (tab: 'calculator' | 'dashboard' | 'actions' | 'tracker' | 'community' | 'profile') => void;
 }
 
 export function DashboardTab({ 
@@ -43,7 +44,8 @@ export function DashboardTab({
   profileName,
   profileAvatar,
   profileTarget,
-  isDarkMode 
+  isDarkMode,
+  onTabChange
 }: DashboardTabProps) {
   
   // Refined Color Schemes according to user specifications
@@ -219,6 +221,47 @@ export function DashboardTab({
 
       </div>
 
+      {/* COMMUNITY COMPARISON CARD */}
+      {(() => {
+        const userValue = calcResult.total;
+        const avgValue = CONSTANTS.globalAverage; // 4700 kg
+        const percentageDiff = Math.abs(Math.round(((userValue - avgValue) / avgValue) * 100));
+        const isLess = userValue < avgValue;
+        
+        return (
+          <div className={`p-5 rounded-2xl border flex flex-col md:flex-row items-center justify-between gap-4 ${theme.card} bg-gradient-to-r ${isDarkMode ? 'from-[#131916] to-[#1a251f]' : 'from-emerald-50/50 to-white'}`}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
+                <Globe size={24} className="animate-spin-slow" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold tracking-tight">Active India Benchmark Comparison</h4>
+                <p className="text-xs text-[#6C7A73] dark:text-zinc-400">
+                  {isLess ? (
+                    <span>Congratulations! You emit <strong className="text-emerald-500 font-extrabold">{percentageDiff}% less</strong> than the average user in India ({avgValue.toLocaleString()} kg CO₂e).</span>
+                  ) : userValue === avgValue ? (
+                    <span>Your emissions exactly match the average user in India ({avgValue.toLocaleString()} kg CO₂e). Let's target some reductions!</span>
+                  ) : (
+                    <span>Attention: You emit <strong className="text-amber-500 font-extrabold">{percentageDiff}% more</strong> than the average user in India ({avgValue.toLocaleString()} kg CO₂e). Recommend activating habits to curb energy output.</span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <button 
+              onClick={() => onTabChange('tracker')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 hover:scale-102 flex items-center gap-1.5 cursor-pointer ${
+                isDarkMode 
+                  ? 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20' 
+                  : 'bg-[#E8F3EC] text-[#1F7A4C] hover:bg-emerald-100 border border-emerald-110'
+              }`}
+            >
+              <span>Audit Habits</span>
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        );
+      })()}
+
       {/* SECOND ROW: ADVANCED ANALYTICS (BREAKDOWN & PROJECTION) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
@@ -265,14 +308,31 @@ export function DashboardTab({
           </div>
 
           {/* Color Guides list */}
-          <div className="grid grid-cols-2 gap-2 text-xs pt-2">
+          <div className="grid grid-cols-2 gap-3.5 text-xs pt-4">
             {pieData.map((d, i) => (
-              <div key={i} className="flex items-center gap-2 p-1.5 rounded-lg bg-stone-300/10 dark:bg-zinc-800/20 border border-[#DDE5DF]/30 dark:border-[#25302A]/20">
-                <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
-                <span className="text-[#6C7A73] dark:text-zinc-400 font-medium truncate max-w-[100px]">{d.name}</span>
-                <span className="ml-auto font-mono font-bold text-[#1B2B24] dark:text-white">
-                  {Math.round(d.value / calcResult.total * 100)}%
-                </span>
+              <div key={i} className="flex flex-col justify-between p-3 rounded-xl bg-stone-300/10 dark:bg-zinc-800/10 border border-[#DDE5DF]/30 dark:border-[#25302A]/20 min-h-[105px]">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: d.color }} />
+                  <span className="text-[#6C7A73] dark:text-zinc-400 font-bold truncate">{d.name}</span>
+                </div>
+                <div className="flex justify-between items-baseline my-1.5">
+                  <span className="font-mono font-black text-[#1B2B24] dark:text-white text-base">
+                    {Math.round(d.value).toLocaleString()} <span className="text-[9px] font-normal text-stone-500">kg</span>
+                  </span>
+                  <span className="font-mono font-bold text-[10px] opacity-65">
+                    {Math.round(d.value / calcResult.total * 100)}%
+                  </span>
+                </div>
+                <button 
+                  onClick={() => onTabChange('tracker')}
+                  className={`w-full mt-1.5 py-1.5 px-2 rounded-lg text-[9px] font-bold text-center border transition-all cursor-pointer ${
+                    isDarkMode 
+                      ? 'bg-emerald-500/10 hover:bg-emerald-500/20 border-emerald-500/20 text-emerald-400' 
+                      : 'bg-emerald-50 hover:bg-emerald-100 border-emerald-100 text-emerald-800'
+                  }`}
+                >
+                  Reduce This →
+                </button>
               </div>
             ))}
           </div>

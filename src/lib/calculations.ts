@@ -38,7 +38,12 @@ export const CONSTANTS = {
   parisTarget: 2300,   // 2.3 tons = 2300 kg
 };
 
-export function calculateFootprint(data: UserFootprintData) {
+/**
+ * Calculates total annual carbon footprint across transport, home, diet, and shopping categories.
+ * @param data - UserFootprintData structure containing metrics for each category
+ * @returns An object with an annual category breakdown and a summed total emissions value in kg CO2e
+ */
+export function calculateFootprint(data: UserFootprintData): { breakdown: Record<string, number>; total: number } {
   // Transport (Annual)
   const carEmissions = Math.max(0, Number(data.transport?.carKmPerWeek) || 0) * 52 * CONSTANTS.transport.carKm;
   const flightEmissions = (Math.max(0, Number(data.transport?.shortFlightsPerYear) || 0) * CONSTANTS.transport.shortFlight) +
@@ -74,7 +79,12 @@ export function calculateFootprint(data: UserFootprintData) {
   };
 }
 
-export function getGrade(totalKg: number) {
+/**
+ * Maps annual carbon emissions in kg CO2e to a standard performance grade from A (Elite) to F (Evolving).
+ * @param totalKg - Annual carbon emissions in kilograms
+ * @returns Grade string: 'A' | 'B' | 'C' | 'D' | 'F'
+ */
+export function getGrade(totalKg: number): 'A' | 'B' | 'C' | 'D' | 'F' {
   if (totalKg <= CONSTANTS.parisTarget) return 'A';
   if (totalKg <= 3500) return 'B';
   if (totalKg <= CONSTANTS.globalAverage) return 'C';
@@ -82,13 +92,23 @@ export function getGrade(totalKg: number) {
   return 'F';
 }
 
-export function getRiskLevel(totalKg: number) {
+/**
+ * Maps annual carbon emissions category boundaries to absolute qualitative climate risk levels.
+ * @param totalKg - Annual carbon emissions in kilograms
+ * @returns Qualitative level string: 'Low' | 'Medium' | 'High'
+ */
+export function getRiskLevel(totalKg: number): 'Low' | 'Medium' | 'High' {
   if (totalKg <= CONSTANTS.parisTarget) return 'Low';
   if (totalKg <= CONSTANTS.globalAverage) return 'Medium';
   return 'High';
 }
 
-export function getEquivalencies(savedKg: number) {
+/**
+ * Computes tangible equivalents (trees planted, distance driven, home energy saved) for a set carbon amount.
+ * @param savedKg - Carbon offset amount in kilograms
+ * @returns Object with trees count, commute distance in km, and electricity in kWh
+ */
+export function getEquivalencies(savedKg: number): { trees: number; kmDriven: number; kwhSaved: number } {
   return {
     trees: Math.floor(savedKg / 21), // ~21kg CO2 per mature tree annually
     kmDriven: Math.floor(savedKg / 0.21), // ~0.21kg per km driven
@@ -96,7 +116,13 @@ export function getEquivalencies(savedKg: number) {
   };
 }
 
-export function calculateSustainabilityScore(totalKg: number, habitsTotalStreaks: number) {
+/**
+ * Computes a standardized 0-100 score based on footprint category volumes and habits consistency streaks.
+ * @param totalKg - Annual carbon emissions in kilograms
+ * @param habitsTotalStreaks - Cumulative streak points across tracked daily tasks
+ * @returns Integer score between 0 and 100 inclusive
+ */
+export function calculateSustainabilityScore(totalKg: number, habitsTotalStreaks: number): number {
   // 0-100 scoring engine based on total footprint and sustained positive habits
   // 1000kg is max score (80 pts). 10000kg is min score (0 pts).
   let footprintScore = 80 - ((totalKg - 1000) / 9000) * 80;
@@ -108,7 +134,16 @@ export function calculateSustainabilityScore(totalKg: number, habitsTotalStreaks
   return Math.round(footprintScore + habitScore);
 }
 
-export function generateInsights(data: UserFootprintData, calcResult: ReturnType<typeof calculateFootprint>) {
+/**
+ * Curates highly actionable climate defense suggestions targeted to the user's highest emission sector.
+ * @param data - Raw footprint metrics input object
+ * @param calcResult - Return structure from calculateFootprint
+ * @returns A read-only array of specific recommendation items
+ */
+export function generateInsights(
+  data: UserFootprintData, 
+  calcResult: { breakdown: Record<string, number>; total: number }
+): Array<{ id: string; title: string; category: string; impactKg: number; difficulty: 'Easy' | 'Medium' | 'Hard' }> {
   // Find highest category
   let highestCategory = 'transport' as keyof UserFootprintData;
   let maxEmissions = 0;
@@ -122,34 +157,34 @@ export function generateInsights(data: UserFootprintData, calcResult: ReturnType
 
   const allInsights = {
     transport: [
-      { id: 't1', title: 'Switch one car commute to cycling or walking per week', category: 'transport', impactKg: 150, difficulty: 'Medium' },
-      { id: 't2', title: 'Carpool to work twice a week', category: 'transport', impactKg: 300, difficulty: 'Medium' },
-      { id: 't3', title: 'Replace a short-haul flight with a train journey', category: 'transport', impactKg: 200, difficulty: 'Hard' },
-      { id: 't4', title: 'Maintain proper tire pressure to improve fuel efficiency', category: 'transport', impactKg: 50, difficulty: 'Easy' },
-      { id: 't5', title: 'Work from home one extra day per week', category: 'transport', impactKg: 400, difficulty: 'Easy' },
+      { id: 't1', title: 'Switch one car commute to cycling or walking per week', category: 'transport', impactKg: 150, difficulty: 'Medium' as const },
+      { id: 't2', title: 'Carpool to work twice a week', category: 'transport', impactKg: 300, difficulty: 'Medium' as const },
+      { id: 't3', title: 'Replace a short-haul flight with a train journey', category: 'transport', impactKg: 200, difficulty: 'Hard' as const },
+      { id: 't4', title: 'Maintain proper tire pressure to improve fuel efficiency', category: 'transport', impactKg: 50, difficulty: 'Easy' as const },
+      { id: 't5', title: 'Work from home one extra day per week', category: 'transport', impactKg: 400, difficulty: 'Easy' as const },
     ],
     home: [
-      { id: 'h1', title: 'Switch to LED bulbs', category: 'home', impactKg: 150, difficulty: 'Easy' },
-      { id: 'h2', title: 'Wash clothes in cold water', category: 'home', impactKg: 80, difficulty: 'Easy' },
-      { id: 'h3', title: 'Lower thermostat by 1°C in winter', category: 'home', impactKg: 200, difficulty: 'Medium' },
-      { id: 'h4', title: 'Switch to a 100% renewable energy provider', category: 'home', impactKg: 1200, difficulty: 'Hard' },
-      { id: 'h5', title: 'Install a smart thermostat', category: 'home', impactKg: 350, difficulty: 'Medium' },
+      { id: 'h1', title: 'Switch to LED bulbs', category: 'home', impactKg: 150, difficulty: 'Easy' as const },
+      { id: 'h2', title: 'Wash clothes in cold water', category: 'home', impactKg: 80, difficulty: 'Easy' as const },
+      { id: 'h3', title: 'Lower thermostat by 1°C in winter', category: 'home', impactKg: 200, difficulty: 'Medium' as const },
+      { id: 'h4', title: 'Switch to a 100% renewable energy provider', category: 'home', impactKg: 1200, difficulty: 'Hard' as const },
+      { id: 'h5', title: 'Install a smart thermostat', category: 'home', impactKg: 350, difficulty: 'Medium' as const },
     ],
     diet: [
-      { id: 'd1', title: 'Participate in Meatless Mondays', category: 'diet', impactKg: 250, difficulty: 'Easy' },
-      { id: 'd2', title: 'Switch from beef to chicken/pork', category: 'diet', impactKg: 600, difficulty: 'Medium' },
-      { id: 'd3', title: 'Try a fully plant-based week', category: 'diet', impactKg: 100, difficulty: 'Medium' },
-      { id: 'd4', title: 'Buy local, seasonal produce', category: 'diet', impactKg: 80, difficulty: 'Easy' },
-      { id: 'd5', title: 'Reduce food waste by meal planning', category: 'diet', impactKg: 150, difficulty: 'Easy' },
+      { id: 'd1', title: 'Participate in Meatless Mondays', category: 'diet', impactKg: 250, difficulty: 'Easy' as const },
+      { id: 'd2', title: 'Switch from beef to chicken/pork', category: 'diet', impactKg: 600, difficulty: 'Medium' as const },
+      { id: 'd3', title: 'Try a fully plant-based week', category: 'diet', impactKg: 100, difficulty: 'Medium' as const },
+      { id: 'd4', title: 'Buy local, seasonal produce', category: 'diet', impactKg: 80, difficulty: 'Easy' as const },
+      { id: 'd5', title: 'Reduce food waste by meal planning', category: 'diet', impactKg: 150, difficulty: 'Easy' as const },
     ],
     shopping: [
-      { id: 's1', title: 'Buy second-hand clothes instead of new', category: 'shopping', impactKg: 120, difficulty: 'Medium' },
-      { id: 's2', title: 'Bundle online orders to reduce shipping trips', category: 'shopping', impactKg: 40, difficulty: 'Easy' },
-      { id: 's3', title: 'Repair electronics instead of replacing', category: 'shopping', impactKg: 100, difficulty: 'Hard' },
-      { id: 's4', title: 'Use a reusable coffee cup', category: 'shopping', impactKg: 25, difficulty: 'Easy' },
-      { id: 's5', title: 'Buy bulk to reduce packaging', category: 'shopping', impactKg: 50, difficulty: 'Medium' },
+      { id: 's1', title: 'Buy second-hand clothes instead of new', category: 'shopping', impactKg: 120, difficulty: 'Medium' as const },
+      { id: 's2', title: 'Bundle online orders to reduce shipping trips', category: 'shopping', impactKg: 40, difficulty: 'Easy' as const },
+      { id: 's3', title: 'Repair electronics instead of replacing', category: 'shopping', impactKg: 100, difficulty: 'Hard' as const },
+      { id: 's4', title: 'Use a reusable coffee cup', category: 'shopping', impactKg: 25, difficulty: 'Easy' as const },
+      { id: 's5', title: 'Buy bulk to reduce packaging', category: 'shopping', impactKg: 50, difficulty: 'Medium' as const },
     ]
   } as const;
 
-  return allInsights[highestCategory];
+  return allInsights[highestCategory] as any;
 }

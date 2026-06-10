@@ -68,7 +68,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="carKm" className="block text-[#6C7A73] mb-1.5">{t.carTravel}</label>
               <input 
-                id="carKm" type="number" min="0" 
+                id="carKm" type="number" min="0" max="5000" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.transport?.carKmPerWeek ?? 0}
                 onChange={(e) => updateData('transport', 'carKmPerWeek', e.target.value === '' ? '' : Number(e.target.value))}
@@ -91,7 +91,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="shortFlights" className="block text-[#6C7A73] mb-1.5">{t.shortFlights}</label>
               <input 
-                id="shortFlights" type="number" min="0"
+                id="shortFlights" type="number" min="0" max="365" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.transport?.shortFlightsPerYear ?? 0}
                 onChange={(e) => updateData('transport', 'shortFlightsPerYear', e.target.value === '' ? '' : Number(e.target.value))}
@@ -100,7 +100,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="longFlights" className="block text-[#6C7A73] mb-1.5">{t.longFlights}</label>
               <input 
-                id="longFlights" type="number" min="0"
+                id="longFlights" type="number" min="0" max="365" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.transport?.longFlightsPerYear ?? 0}
                 onChange={(e) => updateData('transport', 'longFlightsPerYear', e.target.value === '' ? '' : Number(e.target.value))}
@@ -124,7 +124,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="elec" className="block text-[#6C7A73] mb-1.5">{t.electricity}</label>
               <input 
-                id="elec" type="number" min="0"
+                id="elec" type="number" min="0" max="50000" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.home?.electricityKwhPerMonth ?? 0}
                 onChange={(e) => updateData('home', 'electricityKwhPerMonth', e.target.value === '' ? '' : Number(e.target.value))}
@@ -133,7 +133,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="gas" className="block text-[#6C7A73] mb-1.5">{t.gasUsage}</label>
               <input 
-                id="gas" type="number" min="0"
+                id="gas" type="number" min="0" max="10000" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.home?.gasUsage ?? 0}
                 onChange={(e) => updateData('home', 'gasUsage', e.target.value === '' ? '' : Number(e.target.value))}
@@ -205,7 +205,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="orders" className="block text-[#6C7A73] mb-1.5">{t.onlineOrders}</label>
               <input 
-                id="orders" type="number" min="0"
+                id="orders" type="number" min="0" max="500" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.shopping?.onlineOrdersPerMonth ?? 0}
                 onChange={(e) => updateData('shopping', 'onlineOrdersPerMonth', e.target.value === '' ? '' : Number(e.target.value))}
@@ -214,7 +214,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="clothes" className="block text-[#6C7A73] mb-1.5">{t.newClothes}</label>
               <input 
-                id="clothes" type="number" min="0"
+                id="clothes" type="number" min="0" max="500" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.shopping?.newClothesPerMonth ?? 0}
                 onChange={(e) => updateData('shopping', 'newClothesPerMonth', e.target.value === '' ? '' : Number(e.target.value))}
@@ -223,7 +223,7 @@ export function CalculatorTab({ data, setData, calcResult, t, lang, isDarkMode }
             <div>
               <label htmlFor="electronics" className="block text-[#6C7A73] mb-1.5">{t.electronics}</label>
               <input 
-                id="electronics" type="number" min="0"
+                id="electronics" type="number" min="0" max="250" step="1"
                 className={`w-full px-4 py-2.5 rounded-xl border focus:outline-none focus:ring-2 transition-all ${theme.input}`}
                 value={data.shopping?.electronicsPerYear ?? 0}
                 onChange={(e) => updateData('shopping', 'electronicsPerYear', e.target.value === '' ? '' : Number(e.target.value))}

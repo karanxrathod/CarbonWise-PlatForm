@@ -169,6 +169,14 @@ export default function App() {
       isDarkMode ? 'bg-[#0B100D] text-[#F0F4F1]' : 'bg-[#F5F7F4] text-[#1B2B24]'
     }`}>
       
+      {/* Skip to Content bypass link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#1F7A4C] focus:text-white focus:rounded-xl focus:shadow-xl focus:font-extrabold focus:outline-none focus:ring-2 focus:ring-[#2EAF6C] text-xs"
+      >
+        Skip to Content
+      </a>
+      
       {/* 1. SIDEBAR NAVIGATION */}
       <aside className={`fixed md:sticky top-0 left-0 z-40 h-screen w-64 border-r shrink-0 flex flex-col justify-between transition-all duration-300 transform md:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -196,17 +204,21 @@ export default function App() {
             <span className="block text-[10px] font-bold uppercase tracking-widest text-[#6C7A73] mb-3 ml-2">
               Menu Operations
             </span>
-            <ul className="space-y-1.5">
+            <ul className="space-y-1.5" role="tablist" aria-label="CarbonWise main navigation">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
                 return (
-                  <li key={tab.id}>
+                  <li key={tab.id} role="none">
                     <button
                       onClick={() => {
                         setActiveTab(tab.id);
                         setSidebarOpen(false);
                       }}
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-controls={`panel-${tab.id}`}
+                      id={`tab-${tab.id}`}
                       className={`w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-semibold text-sm transition-all focus:outline-none focus:ring-1 cursor-pointer ${
                         isActive
                           ? (isDarkMode 
@@ -280,7 +292,7 @@ export default function App() {
             </button>
           </div>
           <p className="text-[9px] text-[#6C7A73] font-semibold text-center mt-4 tracking-wider uppercase opacity-50">
-            Powered by EcoTrace Core v1.5
+            Powered by CarbonWise Core v1.5
           </p>
         </div>
       </aside>
@@ -454,77 +466,90 @@ export default function App() {
         <main className="flex-1 overflow-y-auto p-4 md:p-8" id="main-content">
           <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
             {activeTab === 'dashboard' && (
-              <DashboardTab 
-                calcResult={calcResult} 
-                totalStreaks={totalStreaks} 
-                data={data} 
-                committedActions={committedActions} 
-                t={t} 
-                lang={lang} 
-                profileName={profileName}
-                profileAvatar={profileAvatar}
-                profileTarget={profileTarget}
-                isDarkMode={isDarkMode}
-              />
+              <div role="tabpanel" id="panel-dashboard" aria-labelledby="tab-dashboard" className="w-full">
+                <DashboardTab 
+                  calcResult={calcResult} 
+                  totalStreaks={totalStreaks} 
+                  data={data} 
+                  committedActions={committedActions} 
+                  t={t} 
+                  lang={lang} 
+                  profileName={profileName}
+                  profileAvatar={profileAvatar}
+                  profileTarget={profileTarget}
+                  isDarkMode={isDarkMode}
+                  onTabChange={setActiveTab}
+                />
+              </div>
             )}
             
             {activeTab === 'calculator' && (
-              <CalculatorTab 
-                data={data} 
-                setData={setData} 
-                calcResult={calcResult} 
-                t={t} 
-                lang={lang} 
-                isDarkMode={isDarkMode}
-              />
+              <div role="tabpanel" id="panel-calculator" aria-labelledby="tab-calculator" className="w-full">
+                <CalculatorTab 
+                  data={data} 
+                  setData={setData} 
+                  calcResult={calcResult} 
+                  t={t} 
+                  lang={lang} 
+                  isDarkMode={isDarkMode}
+                />
+              </div>
             )}
 
             {activeTab === 'tracker' && (
-              <TrackerTab 
-                habitsData={habitsData} 
-                setHabitsData={setHabitsData} 
-                t={t} 
-                lang={lang} 
-                isDarkMode={isDarkMode}
-              />
+              <div role="tabpanel" id="panel-tracker" aria-labelledby="tab-tracker" className="w-full">
+                <TrackerTab 
+                  habitsData={habitsData} 
+                  setHabitsData={setHabitsData} 
+                  t={t} 
+                  lang={lang} 
+                  isDarkMode={isDarkMode}
+                />
+              </div>
             )}
 
             {activeTab === 'community' && (
-              <CommunityTab 
-                calcResult={calcResult} 
-                sustainabilityScore={sustainabilityScore} 
-                t={t} 
-                lang={lang} 
-                isDarkMode={isDarkMode}
-              />
+              <div role="tabpanel" id="panel-community" aria-labelledby="tab-community" className="w-full">
+                <CommunityTab 
+                  calcResult={calcResult} 
+                  sustainabilityScore={sustainabilityScore} 
+                  t={t} 
+                  lang={lang} 
+                  isDarkMode={isDarkMode}
+                />
+              </div>
             )}
 
             {activeTab === 'actions' && (
-              <InsightsTab 
-                data={data} 
-                calcResult={calcResult} 
-                committedActions={committedActions} 
-                setCommittedActions={setCommittedActions} 
-                t={t} 
-                lang={lang} 
-                isDarkMode={isDarkMode}
-              />
+              <div role="tabpanel" id="panel-actions" aria-labelledby="tab-actions" className="w-full">
+                <InsightsTab 
+                  data={data} 
+                  calcResult={calcResult} 
+                  committedActions={committedActions} 
+                  setCommittedActions={setCommittedActions} 
+                  t={t} 
+                  lang={lang} 
+                  isDarkMode={isDarkMode}
+                />
+              </div>
             )}
 
             {activeTab === 'profile' && (
-              <SettingsTab
-                profileName={profileName}
-                setProfileName={setProfileName}
-                profileAvatar={profileAvatar}
-                setProfileAvatar={setProfileAvatar}
-                profileTarget={profileTarget}
-                setProfileTarget={setProfileTarget}
-                resetAllData={resetAllData}
-                isDarkMode={isDarkMode}
-                lang={lang}
-                setLang={setLang}
-                t={t}
-              />
+              <div role="tabpanel" id="panel-profile" aria-labelledby="tab-profile" className="w-full">
+                <SettingsTab
+                  profileName={profileName}
+                  setProfileName={setProfileName}
+                  profileAvatar={profileAvatar}
+                  setProfileAvatar={setProfileAvatar}
+                  profileTarget={profileTarget}
+                  setProfileTarget={setProfileTarget}
+                  resetAllData={resetAllData}
+                  isDarkMode={isDarkMode}
+                  lang={lang}
+                  setLang={setLang}
+                  t={t}
+                />
+              </div>
             )}
           </div>
         </main>
