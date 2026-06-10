@@ -36,4 +36,4 @@ export interface RecommendedAction {
   committed: boolean;
 }
 
-export type TabId = 'calculator' | 'dashboard' | 'actions' | 'tracker' | 'community';
+export type TabId = 'calculator' | 'dashboard' | 'actions' | 'tracker' | 'community' | 'profile';

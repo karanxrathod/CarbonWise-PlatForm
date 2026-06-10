@@ -400,7 +400,37 @@
     
     <!-- Navbar -->
     <nav class="navbar">
-      <div class="logo">CarbonWise</div>
+      <div class="logo">
+        <svg viewBox="0 0 200 200" width="30" height="30" style="overflow: visible; flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="cwLeafGradLanding" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#064e3b" />
+              <stop offset="35%" stopColor="#059669" />
+              <stop offset="75%" stopColor="#10b981" />
+              <stop offset="100%" stopColor="#4ade80" />
+            </linearGradient>
+            <linearGradient id="cwArrowGradLanding" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#84cc16" />
+              <stop offset="60%" stopColor="#bef264" />
+              <stop offset="100%" stopColor="#fbbf24" />
+            </linearGradient>
+            <filter id="cwShadowFilterLanding" x="-10%" y="-10%" width="120%" height="120%">
+              <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#042f1a" floodOpacity="0.4" />
+            </filter>
+          </defs>
+          <circle cx="100" cy="110" r="75" fill="#022c22" opacity="0.15" filter="blur(6px)" />
+          <path d="M 115,25 C 50,22 15,72 15,125 C 15,178 68,188 120,185 C 154,183 175,155 170,125 C 166,108 148,106 137,118 C 122,133 105,148 85,148 C 58,148 45,123 45,98 C 45,70 65,48 95,48 C 112,48 125,58 132,70 L 152,55 C 140,35 128,27 115,25 Z" fill="url(#cwLeafGradLanding)" stroke="#022c22" stroke-width="1.5" />
+          <path d="M 52,112 C 58,95 72,82 92,72" fill="none" stroke="#bef264" stroke-width="3.5" stroke-linecap="round" opacity="0.85" />
+          <path d="M 64,96 C 70,88 80,85 88,86" fill="none" stroke="#bef264" stroke-width="2.5" stroke-linecap="round" opacity="0.8" />
+          <circle cx="88" cy="86" r="5" fill="#fbbf24" stroke="#047857" stroke-width="1" />
+          <path d="M 72,110 C 80,105 92,105 100,111" fill="none" stroke="#bef264" stroke-width="2.5" stroke-linecap="round" opacity="0.8" />
+          <circle cx="100" cy="111" r="5" fill="#fbbf24" stroke="#047857" stroke-width="1" />
+          <path d="M 82,122 C 92,120 102,125 107,134" fill="none" stroke="#bef264" stroke-width="2.5" stroke-linecap="round" opacity="0.8" />
+          <circle cx="107" cy="134" r="5" fill="#fbbf24" stroke="#047857" stroke-width="1" />
+          <path d="M 95,115 C 125,110 152,78 178,40 L 165,33 L 195,22 L 190,52 L 176,44 C 152,80 128,118 95,115 Z" fill="url(#cwArrowGradLanding)" filter="url(#cwShadowFilterLanding)" />
+        </svg>
+        <span><span style="color: #273A25; font-weight: 800;">Carbon</span><span style="color: #10b981; font-weight: 800;">Wise</span></span>
+      </div>
       <div class="nav-links">
         <a href="#">Home</a>
         <a href="#">Track</a>
