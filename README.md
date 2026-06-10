@@ -1,20 +1,37 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 🌿 CarbonWise — Know Your Carbon. Own Your Future.
 
-# Run and deploy your AI Studio app
+A bilingual (English/Hindi) Carbon Footprint Awareness Platform 
+built for real users across India and the world.
 
-This contains everything you need to run your app locally.
+CarbonWise helps individuals calculate their personal CO2 emissions, 
+understand where they come from, and take personalized AI-driven actions 
+to reduce them — one habit at a time.
 
-View your app in AI Studio: https://ai.studio/apps/f58ebd6e-e0a0-4057-be90-f871e91a7706
+## ✨ Features
+- 🧮 60-second Carbon Footprint Calculator
+- 📊 Live Visual Dashboard with category breakdown
+- 🤖 Personalized AI Action Recommendations
+- 🔥 Daily Habit Streak Tracker
+- 🏆 Community Leaderboard & Badges
+- 🌐 Full Bilingual Support — English & Hindi
+- 💾 LocalStorage persistence (no account needed)
+- ♿ WCAG AA Accessible
 
-## Run Locally
+## 🛠️ Built With
+- HTML5, CSS3, Vanilla JavaScript
+- Google Fonts (Poppins)
+- Zero external dependencies
 
-**Prerequisites:**  Node.js
+## 🚀 Live Demo
+[Try CarbonWise →](https://carbonwise-platform.vercel.app/)
 
+## 📸 Built for PromptWars Challenge 3
+This project was built as part of the PromptWars Virtual Hackathon 
+— Challenge 3: Carbon Footprint Awareness Platform.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🌍 Why This Matters
+The average person has no idea how much CO2 their daily choices produce. 
+CarbonWise makes the invisible visible — and makes action feel possible.
+
+---
+Made with 💚 for the planet | © 2025 CarbonWise
