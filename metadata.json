@@ -1,0 +1,8 @@
+{
+  "name": "Remix: CarbonWise",
+  "description": "Carbon Footprint Awareness Platform: Track, Understand, and Act to reduce your carbon footprint.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
